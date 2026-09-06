@@ -34,6 +34,13 @@ class DomainModelPersistenceTest {
     @Autowired
     private LaneQuoteRepository laneQuoteRepository;
 
+    @org.junit.jupiter.api.BeforeEach
+    void cleanUp() {
+        laneQuoteRepository.deleteAllInBatch();
+        transporterRepository.deleteAllInBatch();
+        laneRepository.deleteAllInBatch();
+    }
+
     @Test
     @DisplayName("Should persist Lane, Transporter, and LaneQuote with BigDecimal precision")
     void testPersistAndRetrieveEntities() {
