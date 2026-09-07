@@ -14,8 +14,10 @@ A high-performance Spring Boot REST backend that solves the **Transporter Assign
   - [2. Optimization Assignment API](#2-optimization-assignment-api)
   - [Error Handling](#error-handling)
 - [Postman Collection](#postman-collection)
-- [Benchmark Results](#benchmark-results)
-- [Building & Running the Application](#building--running-the-application)
+- [Running the Application](#running-the-application)
+  - [Option A: Run Locally with Maven (No Docker Needed)](#option-a-run-locally-with-maven-no-docker-needed)
+  - [Option B: Run with Docker (Optional)](#option-b-run-with-docker-optional)
+  - [Swagger UI & H2 Database Console](#swagger-ui--h2-database-console)
 - [Running Automated Tests](#running-automated-tests)
 
 ---
@@ -225,21 +227,24 @@ The collection includes 4 preconfigured scenarios:
 
 ---
 
-## Building & Running the Application
+## Running the Application
 
-### Prerequisites
+You can run the application either **locally using Maven (no Docker needed)** or **in a Docker container (optional)**. Choose whichever option you prefer:
+
+### Option A: Run Locally with Maven (No Docker Needed - Recommended)
+
+#### Prerequisites
 - Java Development Kit (JDK) 21 or higher
 - Git
 
-### Steps
-
+#### Steps:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/thepratik4/transporter-lane-optimizer.git
    cd transporter-lane-optimizer
    ```
 
-2. **Run using Maven Wrapper**:
+2. **Start the application** using the included Maven wrapper:
    - **Windows**:
      ```powershell
      .\mvnw.cmd spring-boot:run
@@ -248,33 +253,37 @@ The collection includes 4 preconfigured scenarios:
      ```bash
      ./mvnw spring-boot:run
      ```
-
-3. **Interactive Swagger / OpenAPI UI**:
-   - **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-   - **OpenAPI JSON Spec**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
-
-4. **Access H2 Database Console (Optional)**:
-   - URL: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
-   - JDBC URL: `jdbc:h2:mem:testdb`
-   - Username: `sa`
-   - Password: *(leave blank)*
+   The application will start on port `8080`.
 
 ---
 
-## Running with Docker (2 Simple Steps)
+### Option B: Run with Docker (Optional)
 
-The project includes a production-ready, multi-stage [`Dockerfile`](Dockerfile) with automated build and minimal runtime layers.
+If you prefer containerization or do not have JDK 21 installed on your host machine, a production-ready, multi-stage [`Dockerfile`](Dockerfile) is provided:
 
-### Step 1: Build the Docker Image
-```bash
-docker build -t transporter-optimizer .
-```
+1. **Build the Docker Image**:
+   ```bash
+   docker build -t transporter-optimizer .
+   ```
 
-### Step 2: Run the Docker Container
-```bash
-docker run -p 8080:8080 transporter-optimizer
-```
-Once started, the APIs and Swagger UI are accessible at `http://localhost:8080/swagger-ui.html`.
+2. **Run the Container**:
+   ```bash
+   docker run -p 8080:8080 transporter-optimizer
+   ```
+
+---
+
+### Swagger UI & H2 Database Console
+
+Once the application is running (via either Option A or Option B):
+
+- **Interactive Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+  - Explore and test both REST endpoints interactively from your browser.
+- **OpenAPI JSON Spec**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+- **H2 In-Memory Database Console**: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+  - JDBC URL: `jdbc:h2:mem:testdb`
+  - Username: `sa`
+  - Password: *(leave blank)*
 
 ---
 
