@@ -192,4 +192,43 @@ class TransporterOptimizerTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("maxTransporters must be at least 1");
     }
+
+    @Test
+    @DisplayName("Should prefer solution with maximum distinct transporters when total costs are equal (secondary objective)")
+    void testOptimizeTieBreakerPrefersMoreTransporters() {
+        // 2 lanes
+        List<Lane> lanes = List.of(
+                new Lane(1L, "CityA", "CityB"),
+                new Lane(2L, "CityC", "CityD")
+        );
+        laneRepository.saveAll(lanes);
+
+        // 3 transporters: T1 can do both for 100+100=200
+        // T2 can do Lane 1 for 100
+        // T3 can do Lane 2 for 100
+        Transporter t1 = new Transporter(1L, "T1");
+        Transporter t2 = new Transporter(2L, "T2");
+        Transporter t3 = new Transporter(3L, "T3");
+        transporterRepository.saveAll(List.of(t1, t2, t3));
+
+        laneQuoteRepository.saveAll(List.of(
+                new LaneQuote(lanes.get(0), t1, new BigDecimal("100")),
+                new LaneQuote(lanes.get(1), t1, new BigDecimal("100")),
+                new LaneQuote(lanes.get(0), t2, new BigDecimal("100")),
+                new LaneQuote(lanes.get(1), t3, new BigDecimal("100"))
+        ));
+
+        // When maxTransporters = 2:
+        // Option A: {T1} -> cost = 200, utilizedTransporters = [1] (size 1)
+        // Option B: {T2, T3} -> cost = 200, utilizedTransporters = [2, 3] (size 2)
+        // Both equal min cost 200, but Option B uses 2 transporters > 1
+        OptimizationResult result = optimizer.optimize(2);
+
+        assertThat(result.getTotalCost()).isEqualByComparingTo(new BigDecimal("200"));
+        assertThat(result.getSelectedTransporters()).containsExactly(2L, 3L);
+        assertThat(result.getAssignments()).containsExactly(
+                new LaneAssignmentDto(1L, 2L),
+                new LaneAssignmentDto(2L, 3L)
+        );
+    }
 }
