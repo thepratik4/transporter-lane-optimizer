@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "8f8b3c9f-3d6a-4d2a-8c7e-b6a374b86123",
+		"name": "Transporter Assignment On Lanes",
+		"description": "Postman Collection for testing all scenarios of the Transporter Assignment on Lanes backend application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Scenario 1: Test Case 1 (5 Lanes, 7 Transporters)",
+			"item": [
+				{
+					"name": "1. Submit Input Data (Test Case 1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lanes\": [\n    {\"id\": 1, \"origin\": \"Mumbai\", \"destination\": \"Delhi\"},\n    {\"id\": 2, \"origin\": \"Delhi\", \"destination\": \"Bangalore\"},\n    {\"id\": 3, \"origin\": \"Chennai\", \"destination\": \"Kolkata\"},\n    {\"id\": 4, \"origin\": \"Pune\", \"destination\": \"Hyderabad\"},\n    {\"id\": 5, \"origin\": \"Ahmedabad\", \"destination\": \"Jaipur\"}\n  ],\n  \"transporters\": [\n    {\"id\": 1, \"name\": \"Transporter T1\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 20835}, {\"laneId\": 2, \"quote\": 10512}, {\"laneId\": 3, \"quote\": 22105}, {\"laneId\": 4, \"quote\": 42481}, {\"laneId\": 5, \"quote\": 19862}]},\n    {\"id\": 2, \"name\": \"Transporter T2\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 48844}, {\"laneId\": 2, \"quote\": 31326}, {\"laneId\": 3, \"quote\": 18640}, {\"laneId\": 4, \"quote\": 45828}, {\"laneId\": 5, \"quote\": 18297}]},\n    {\"id\": 3, \"name\": \"Transporter T3\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 39020}, {\"laneId\": 2, \"quote\": 20648}, {\"laneId\": 3, \"quote\": 31438}, {\"laneId\": 4, \"quote\": 36447}, {\"laneId\": 5, \"quote\": 12789}]},\n    {\"id\": 4, \"name\": \"Transporter T4\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 14400}, {\"laneId\": 2, \"quote\": 44514}, {\"laneId\": 3, \"quote\": 14316}, {\"laneId\": 4, \"quote\": 10678}, {\"laneId\": 5, \"quote\": 13032}]},\n    {\"id\": 5, \"name\": \"Transporter T5\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 11601}, {\"laneId\": 2, \"quote\": 19760}, {\"laneId\": 3, \"quote\": 40870}, {\"laneId\": 4, \"quote\": 20635}, {\"laneId\": 5, \"quote\": 26421}]},\n    {\"id\": 6, \"name\": \"Transporter T6\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 35095}, {\"laneId\": 2, \"quote\": 12494}, {\"laneId\": 3, \"quote\": 17808}, {\"laneId\": 4, \"quote\": 36210}, {\"laneId\": 5, \"quote\": 39444}]},\n    {\"id\": 7, \"name\": \"Transporter T7\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 26070}, {\"laneId\": 2, \"quote\": 41098}, {\"laneId\": 3, \"quote\": 20932}, {\"laneId\": 4, \"quote\": 16897}, {\"laneId\": 5, \"quote\": 27938}]}\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/input",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "input"]
+						}
+					}
+				},
+				{
+					"name": "2. Get Optimized Results (maxTransporters = 3)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"maxTransporters\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/assignment",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "assignment"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Scenario 2: Test Case 2 (Sparse Disjoint Quotes)",
+			"item": [
+				{
+					"name": "1. Submit Input Data (Test Case 2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lanes\": [\n    {\"id\": 1, \"origin\": \"Chandigarh\", \"destination\": \"Shimla\"},\n    {\"id\": 2, \"origin\": \"Agra\", \"destination\": \"Kanpur\"},\n    {\"id\": 3, \"origin\": \"Varanasi\", \"destination\": \"Gorakhpur\"},\n    {\"id\": 4, \"origin\": \"Amritsar\", \"destination\": \"Ludhiana\"},\n    {\"id\": 5, \"origin\": \"Coimbatore\", \"destination\": \"Madurai\"}\n  ],\n  \"transporters\": [\n    {\"id\": 1, \"name\": \"Transporter X\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 1000}, {\"laneId\": 2, \"quote\": 1500}]},\n    {\"id\": 2, \"name\": \"Transporter Y\", \"laneQuotes\": [{\"laneId\": 3, \"quote\": 2000}, {\"laneId\": 4, \"quote\": 1800}]},\n    {\"id\": 3, \"name\": \"Transporter Z\", \"laneQuotes\": [{\"laneId\": 5, \"quote\": 1200}]},\n    {\"id\": 4, \"name\": \"Transporter W\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 1100}, {\"laneId\": 4, \"quote\": 1750}]}\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/input",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "input"]
+						}
+					}
+				},
+				{
+					"name": "2. Get Optimized Results (maxTransporters = 3)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"maxTransporters\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/assignment",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "assignment"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Scenario 3: Full CSV Data (9 Lanes, 7 Transporters)",
+			"item": [
+				{
+					"name": "1. Submit Input Data (CSV 9 Lanes)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lanes\": [\n    {\"id\": 1, \"origin\": \"Mumbai\", \"destination\": \"Delhi\"},\n    {\"id\": 2, \"origin\": \"Delhi\", \"destination\": \"Bangalore\"},\n    {\"id\": 3, \"origin\": \"Chennai\", \"destination\": \"Kolkata\"},\n    {\"id\": 4, \"origin\": \"Pune\", \"destination\": \"Hyderabad\"},\n    {\"id\": 5, \"origin\": \"Ahmedabad\", \"destination\": \"Jaipur\"},\n    {\"id\": 6, \"origin\": \"Guwahati\", \"destination\": \"Shillong\"},\n    {\"id\": 7, \"origin\": \"Lucknow\", \"destination\": \"Patna\"},\n    {\"id\": 8, \"origin\": \"Ranchi\", \"destination\": \"Bhubaneswar\"},\n    {\"id\": 9, \"origin\": \"Surat\", \"destination\": \"Indore\"}\n  ],\n  \"transporters\": [\n    {\"id\": 1, \"name\": \"T1\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 20835}, {\"laneId\": 2, \"quote\": 10512}, {\"laneId\": 3, \"quote\": 22105}, {\"laneId\": 4, \"quote\": 42481}, {\"laneId\": 5, \"quote\": 19862}, {\"laneId\": 6, \"quote\": 13567}, {\"laneId\": 7, \"quote\": 10015}, {\"laneId\": 8, \"quote\": 17886}, {\"laneId\": 9, \"quote\": 43996}]},\n    {\"id\": 2, \"name\": \"T2\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 48844}, {\"laneId\": 2, \"quote\": 31326}, {\"laneId\": 3, \"quote\": 18640}, {\"laneId\": 4, \"quote\": 45828}, {\"laneId\": 5, \"quote\": 18297}, {\"laneId\": 6, \"quote\": 45810}, {\"laneId\": 7, \"quote\": 49573}, {\"laneId\": 8, \"quote\": 45122}, {\"laneId\": 9, \"quote\": 31856}]},\n    {\"id\": 3, \"name\": \"T3\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 39020}, {\"laneId\": 2, \"quote\": 20648}, {\"laneId\": 3, \"quote\": 31438}, {\"laneId\": 4, \"quote\": 36447}, {\"laneId\": 5, \"quote\": 12789}, {\"laneId\": 6, \"quote\": 49985}, {\"laneId\": 7, \"quote\": 35285}, {\"laneId\": 8, \"quote\": 10281}, {\"laneId\": 9, \"quote\": 40092}]},\n    {\"id\": 4, \"name\": \"T4\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 14400}, {\"laneId\": 2, \"quote\": 44514}, {\"laneId\": 3, \"quote\": 14316}, {\"laneId\": 4, \"quote\": 10678}, {\"laneId\": 5, \"quote\": 13032}, {\"laneId\": 6, \"quote\": 46024}, {\"laneId\": 7, \"quote\": 42342}, {\"laneId\": 8, \"quote\": 35742}, {\"laneId\": 9, \"quote\": 48921}]},\n    {\"id\": 5, \"name\": \"T5\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 11601}, {\"laneId\": 2, \"quote\": 19760}, {\"laneId\": 3, \"quote\": 40870}, {\"laneId\": 4, \"quote\": 20635}, {\"laneId\": 5, \"quote\": 26421}, {\"laneId\": 6, \"quote\": 28809}, {\"laneId\": 7, \"quote\": 27815}, {\"laneId\": 8, \"quote\": 17024}, {\"laneId\": 9, \"quote\": 44691}]},\n    {\"id\": 6, \"name\": \"T6\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 35095}, {\"laneId\": 2, \"quote\": 12494}, {\"laneId\": 3, \"quote\": 17808}, {\"laneId\": 4, \"quote\": 36210}, {\"laneId\": 5, \"quote\": 39444}, {\"laneId\": 6, \"quote\": 29948}, {\"laneId\": 7, \"quote\": 17320}, {\"laneId\": 8, \"quote\": 10492}, {\"laneId\": 9, \"quote\": 37864}]},\n    {\"id\": 7, \"name\": \"T7\", \"laneQuotes\": [{\"laneId\": 1, \"quote\": 26070}, {\"laneId\": 2, \"quote\": 41098}, {\"laneId\": 3, \"quote\": 20932}, {\"laneId\": 4, \"quote\": 16897}, {\"laneId\": 5, \"quote\": 27938}, {\"laneId\": 6, \"quote\": 43517}, {\"laneId\": 7, \"quote\": 25881}, {\"laneId\": 8, \"quote\": 46136}, {\"laneId\": 9, \"quote\": 31286}]}\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/input",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "input"]
+						}
+					}
+				},
+				{
+					"name": "2. Get Optimized Results (maxTransporters = 3)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"maxTransporters\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/assignment",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "assignment"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Scenario 4: Error & Edge Cases",
+			"item": [
+				{
+					"name": "1. Negative Quote Validation Error (400)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lanes\": [\n    {\"id\": 1, \"origin\": \"Mumbai\", \"destination\": \"Delhi\"}\n  ],\n  \"transporters\": [\n    {\n      \"id\": 1,\n      \"name\": \"Transporter T1\",\n      \"laneQuotes\": [\n        {\"laneId\": 1, \"quote\": -500}\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/input",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "input"]
+						}
+					}
+				},
+				{
+					"name": "2. Unknown Lane Reference Error (400)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lanes\": [\n    {\"id\": 1, \"origin\": \"Mumbai\", \"destination\": \"Delhi\"}\n  ],\n  \"transporters\": [\n    {\n      \"id\": 1,\n      \"name\": \"Transporter T1\",\n      \"laneQuotes\": [\n        {\"laneId\": 999, \"quote\": 5000}\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/input",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "input"]
+						}
+					}
+				},
+				{
+					"name": "3. Invalid maxTransporters <= 0 (400)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"maxTransporters\": 0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/transporters/assignment",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "v1", "transporters", "assignment"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
