@@ -21,6 +21,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Concrete optimization strategy implementing exhaustive combinatorial search with pruning.
+ *
+ * <p>Constraints and Objectives:
+ * <ul>
+ *   <li><b>Full Coverage (Hard Constraint)</b>: Every lane must be assigned to an authorized quoting transporter.</li>
+ *   <li><b>Capacity Constraint</b>: Distinct transporters used cannot exceed {@code maxTransporters}.</li>
+ *   <li><b>Cost Minimization (Primary Objective)</b>: Minimizes aggregate quotes across all trade lanes.</li>
+ *   <li><b>Transporter Diversity (Secondary Objective)</b>: Maximizes distinct transporter utilization on cost ties.</li>
+ * </ul>
+ */
 @Service
 @RequiredArgsConstructor
 public class TransporterOptimizerImpl implements TransporterOptimizer {

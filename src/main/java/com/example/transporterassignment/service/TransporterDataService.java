@@ -21,6 +21,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Service orchestrating the atomic ingestion and validation of trade lanes, transporters, and quotes.
+ * Adheres to the Service Layer and DTO patterns by transforming external API DTOs into domain JPA entities.
+ */
 @Service
 @RequiredArgsConstructor
 public class TransporterDataService {

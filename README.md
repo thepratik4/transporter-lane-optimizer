@@ -8,6 +8,7 @@ A high-performance Spring Boot REST backend that solves the **Transporter Assign
 - [Problem Overview & Constraints](#problem-overview--constraints)
 - [Architecture & Tech Stack](#architecture--tech-stack)
 - [Data Model](#data-model)
+- [Software Architecture & Design Patterns](#software-architecture--design-patterns)
 - [Optimization Algorithm](#optimization-algorithm)
 - [REST API Reference](#rest-api-reference)
   - [1. Data Ingestion API](#1-data-ingestion-api)
@@ -55,6 +56,41 @@ The domain model consists of three core relational entities:
   - `transporter`: Foreign key reference to `Transporter`
   - `quote`: `BigDecimal` value (prevents floating-point rounding inaccuracies)
   - Database constraint: `UNIQUE (lane_id, transporter_id)` ensures a transporter cannot quote twice on the same lane.
+
+---
+
+## Software Architecture & Design Patterns
+
+The codebase is engineered with strict adherence to clean code principles, high cohesion, low coupling, and established enterprise design patterns:
+
+### 1. Strategy Pattern (`com.example.transporterassignment.optimizer`)
+- **Interface**: `TransporterOptimizer` defines the contract `OptimizationResult optimize(int maxTransporters)`.
+- **Concrete Strategy**: `TransporterOptimizerImpl` encapsulates the combinatorial search with pruning and tie-breaker evaluations.
+- **Benefit**: The REST controller depends strictly on the abstraction. Future algorithmic strategies (e.g., Integer Linear Programming, Simplex, or Genetic Algorithms) can be introduced without modifying controller logic.
+
+### 2. Data Transfer Object (DTO) Pattern (`com.example.transporterassignment.dto`)
+- Decouples external API contracts (`LaneInputDto`, `TransporterInputDto`, `AssignmentRequest`, `AssignmentResponse`) from internal JPA persistence entities (`Lane`, `Transporter`, `LaneQuote`).
+- Enforces strict input validation constraints (Jakarta Bean Validation) at the API boundary, preventing over-posting and domain leakage.
+
+### 3. Repository Pattern (`com.example.transporterassignment.repository`)
+- `LaneRepository`, `TransporterRepository`, and `LaneQuoteRepository` extend Spring Data JPA interfaces.
+- Encapsulates database access and provides high-performance batch operations (`deleteAllInBatch()`, `saveAll()`).
+
+### 4. Builder Pattern
+- Applied via Lombok `@Builder` on DTOs and result models (`OptimizationResult`, `AssignmentResponse`, `ApiResponse`, `ErrorResponse`).
+- Promotes immutability and readable, fluent instantiation of complex result graphs.
+
+### 5. Controller-Service-Repository Layered Architecture
+- **Controller Layer** (`controller`): Manages HTTP routing, parameter binding, Swagger docs, and status codes.
+- **Service & Engine Layer** (`service`, `optimizer`): Encapsulates transactional business logic, relational mapping, and combinatorial optimization.
+- **Data Access Layer** (`repository`): Handles persistence with H2 relational database.
+
+### 6. Interceptor / Global Exception Handler Pattern (`com.example.transporterassignment.exception`)
+- `GlobalExceptionHandler` (`@RestControllerAdvice`) intercepts all runtime, validation, and domain exceptions centrally.
+- Normalizes all failure scenarios into consistent, RFC-compliant JSON responses with appropriate HTTP status codes (`400 Bad Request`, `500 Internal Server Error`).
+
+### 7. Dependency Injection & Inversion of Control (IoC)
+- Components leverage constructor injection via `@RequiredArgsConstructor`, ensuring immutability, thread-safety, and seamless unit testing with mocks.
 
 ---
 
