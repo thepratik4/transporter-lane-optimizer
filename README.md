@@ -249,14 +249,32 @@ The collection includes 4 preconfigured scenarios:
      ./mvnw spring-boot:run
      ```
 
-3. **Verify Health**:
-   The server starts on port `8080`. Send an input or check endpoints using Postman or cURL.
+3. **Interactive Swagger / OpenAPI UI**:
+   - **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+   - **OpenAPI JSON Spec**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
 4. **Access H2 Database Console (Optional)**:
-   - URL: `http://localhost:8080/h2-console`
+   - URL: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
    - JDBC URL: `jdbc:h2:mem:testdb`
    - Username: `sa`
    - Password: *(leave blank)*
+
+---
+
+## Running with Docker (2 Simple Steps)
+
+The project includes a production-ready, multi-stage [`Dockerfile`](Dockerfile) with automated build and minimal runtime layers.
+
+### Step 1: Build the Docker Image
+```bash
+docker build -t transporter-optimizer .
+```
+
+### Step 2: Run the Docker Container
+```bash
+docker run -p 8080:8080 transporter-optimizer
+```
+Once started, the APIs and Swagger UI are accessible at `http://localhost:8080/swagger-ui.html`.
 
 ---
 
